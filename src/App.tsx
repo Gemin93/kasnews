@@ -1,11 +1,13 @@
+import { Routes, Route } from "react-router";
+import { Home } from "./pages/Home";
+import { NewsPage } from "./pages/NewsPage";
 import "./App.css";
 
-function App() {
+export default function App() {
   return (
-    <>
-      <p>Kaspersky News</p>
-    </>
+    <Routes>
+      <Route path="/" element={<Home />} />
+      <Route path="/news/:id" element={<NewsPage />} />
+    </Routes>
   );
 }
-
-export default App;
