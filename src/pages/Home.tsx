@@ -1,6 +1,9 @@
-import { Card, Typography } from "antd";
+import { Card } from "antd";
+import { Layout, Menu } from "antd";
 import { Link } from "react-router";
 import type { IData_SnippetNews } from "../types/news";
+
+const { Header, Content, Footer } = Layout;
 
 const mockNews: IData_SnippetNews[] = [
   {
@@ -53,17 +56,35 @@ const mockNews: IData_SnippetNews[] = [
   },
 ];
 
+const items = Array.from({ length: 2 }).map((_, index) => ({
+  key: index + 1,
+  label: `News ${index + 1}`,
+}));
+
 export function Home() {
   return (
     <div style={{ padding: 24 }}>
-      <Typography.Title>News</Typography.Title>
-      {mockNews.map((news) => (
-        <Link to={`/news/${news.ID}`} key={news.ID}>
-          <Card style={{ marginTop: 16 }}>
-            <Card.Meta title={news.TI} description={news.AB} />
-          </Card>
-        </Link>
-      ))}
+      <Layout>
+        <Header style={{ display: "flex", alignItems: "center" }}>
+          <Menu
+            theme="dark"
+            mode="horizontal"
+            defaultSelectedKeys={["1"]}
+            items={items}
+            style={{ flex: 1, minWidth: 0 }}
+          />
+        </Header>
+        <Content style={{ padding: "0 48px" }}>
+          {mockNews.map((news) => (
+            <Link to={`/news/${news.ID}`} key={news.ID}>
+              <Card style={{ marginTop: 16 }}>
+                <Card.Meta title={news.TI} description={news.AB} />
+              </Card>
+            </Link>
+          ))}
+        </Content>
+        <Footer style={{ textAlign: "center" }}> Kaspersky News </Footer>
+      </Layout>
     </div>
   );
 }
