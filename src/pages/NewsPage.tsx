@@ -1,5 +1,7 @@
 import { useParams, useNavigate } from "react-router";
-import { Button, Typography } from "antd";
+import { Card, Button, Typography, Checkbox, Tag, Row, Col, Space } from "antd";
+import type { CheckboxProps } from "antd";
+import { InfoOutlined } from "@ant-design/icons";
 import type { IData_SnippetNews } from "../types/news";
 
 const mockNews: IData_SnippetNews[] = [
@@ -58,13 +60,60 @@ export function NewsPage() {
   const navigate = useNavigate();
   const news = mockNews.find((news) => news.ID === Number(id));
 
+  const onChange: CheckboxProps["onChange"] = (e) => {
+    console.log(`checked = ${e.target.checked}`);
+  };
+
   if (!news) return <Typography.Text>News not found</Typography.Text>;
+  const { Text } = Typography;
 
   return (
     <div style={{ padding: 24 }}>
       <Button onClick={() => navigate(-1)} style={{ marginBottom: 16 }}>
         Back
       </Button>
+      <Card>
+        {/* Верхняя панель: дата, охват, страна, иконка */}
+        <Row justify="space-between" align="middle">
+          <Col>
+            <Space size="middle">
+              <Text>
+                {new Date(news.DP).toLocaleDateString("en-GB", {
+                  day: "2-digit",
+                  month: "short",
+                  year: "numeric",
+                })}
+              </Text>
+              <Text>
+                {news.REACH} <Text type="secondary">Reach</Text>{" "}
+              </Text>
+              <Text type="secondary">
+                Top Traffic:{" "}
+                {news.TRAFFIC.map((traffic) => {
+                  return (
+                    <Text type="secondary" key={traffic.value}>
+                      {`${traffic.value} `}
+                      <Text>{`${(Number(traffic.count) * 100).toFixed(
+                        2
+                      )}% `}</Text>
+                    </Text>
+                  );
+                })}
+              </Text>
+            </Space>
+          </Col>
+
+          <Col>
+            <Space size="middle">
+              <Tag style={{ padding: 4 }} color="#d62929">
+                {news.SENT}
+              </Tag>
+              <Button icon={<InfoOutlined />}></Button>
+              <Checkbox onChange={onChange}></Checkbox>
+            </Space>
+          </Col>
+        </Row>
+      </Card>
       <Typography.Title>{news.TI}</Typography.Title>
       <Typography.Paragraph>{news.AB}</Typography.Paragraph>
     </div>
