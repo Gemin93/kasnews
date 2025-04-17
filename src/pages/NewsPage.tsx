@@ -1,7 +1,22 @@
 import { useParams, useNavigate } from "react-router";
-import { Card, Button, Typography, Checkbox, Tag, Row, Col, Space } from "antd";
+import {
+  Card,
+  Button,
+  Typography,
+  Checkbox,
+  Tag,
+  Row,
+  Col,
+  Space,
+  Image,
+} from "antd";
 import type { CheckboxProps } from "antd";
-import { InfoOutlined } from "@ant-design/icons";
+import {
+  InfoOutlined,
+  GlobalOutlined,
+  BookOutlined,
+  UserOutlined,
+} from "@ant-design/icons";
 import type { IData_SnippetNews } from "../types/news";
 
 const mockNews: IData_SnippetNews[] = [
@@ -37,7 +52,7 @@ const mockNews: IData_SnippetNews[] = [
     ],
     REACH: 2392,
     CNTR: "France",
-    CNTR_CODE: "fr",
+    CNTR_CODE: "FR",
     TRAFFIC: [
       {
         value: "India",
@@ -73,7 +88,7 @@ export function NewsPage() {
         Back
       </Button>
       <Card>
-        {/* Верхняя панель: дата, охват, страна, иконка */}
+        {/* Верхняя панель: дата, охват, страна, иконки */}
         <Row justify="space-between" align="middle">
           <Col>
             <Space size="middle">
@@ -113,9 +128,30 @@ export function NewsPage() {
             </Space>
           </Col>
         </Row>
+        <Typography.Title level={3} style={{ color: "#0c5ccc" }}>
+          {news.TI}
+        </Typography.Title>
+        <Space>
+          <Space style={{ marginRight: "10px" }}>
+            <GlobalOutlined />
+            <Text>{news.DOM}</Text>
+          </Space>
+          <Space style={{ marginRight: "10px" }}>
+            <Image src={`https://flagsapi.com/${news.CNTR_CODE}/flat/24.png`} />{" "}
+            <Text>{news.CNTR}</Text>
+          </Space>
+          <Space style={{ marginRight: "10px" }}>
+            <BookOutlined />
+            <Text>{news.LANG}</Text>
+          </Space>
+          <Space style={{ marginRight: "10px" }}>
+            {news.AU.length !== 0 &&
+              news.AU.map((author) => <Text key={author}>{author}</Text>)}
+          </Space>
+        </Space>
+
+        <Typography.Paragraph>{news.AB}</Typography.Paragraph>
       </Card>
-      <Typography.Title>{news.TI}</Typography.Title>
-      <Typography.Paragraph>{news.AB}</Typography.Paragraph>
     </div>
   );
 }
