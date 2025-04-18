@@ -9,6 +9,7 @@ import {
   Col,
   Space,
   Image,
+  Flex,
 } from "antd";
 import type { CheckboxProps } from "antd";
 import {
@@ -70,6 +71,33 @@ const mockNews: IData_SnippetNews[] = [
   },
 ];
 
+// функция для поиска и подсвечивания ключевых слов
+
+const highlightKeywords = (text: string, keywords: string[]) => {
+  if (!keywords.length) return text;
+
+  const pattern = new RegExp(`(${keywords.join("|")})`, "gi");
+  const parts = text.split(pattern);
+
+  return parts.map((part, i) =>
+    keywords.some((kw) => kw.toLowerCase() === part.toLowerCase()) ? (
+      <Typography.Text
+        key={i}
+        style={{
+          backgroundColor: "#0c5ccc",
+          fontWeight: 600,
+          borderRadius: "4px",
+          padding: "2px",
+        }}
+      >
+        {part}
+      </Typography.Text>
+    ) : (
+      part
+    )
+  );
+};
+
 export function NewsPage() {
   const { id } = useParams();
   const navigate = useNavigate();
@@ -80,7 +108,7 @@ export function NewsPage() {
   };
 
   if (!news) return <Typography.Text>News not found</Typography.Text>;
-  const { Text } = Typography;
+  const { Paragraph, Text } = Typography;
 
   return (
     <div style={{ padding: 24 }}>
@@ -137,7 +165,7 @@ export function NewsPage() {
             <Text>{news.DOM}</Text>
           </Space>
           <Space style={{ marginRight: "10px" }}>
-            <Image src={`https://flagsapi.com/${news.CNTR_CODE}/flat/24.png`} />{" "}
+            <Image src={`https://flagsapi.com/${news.CNTR_CODE}/flat/24.png`} />
             <Text>{news.CNTR}</Text>
           </Space>
           <Space style={{ marginRight: "10px" }}>
@@ -150,7 +178,48 @@ export function NewsPage() {
           </Space>
         </Space>
 
-        <Typography.Paragraph>{news.AB}</Typography.Paragraph>
+        <Paragraph style={{ fontSize: "16px", lineHeight: 1.6 }}>
+          {highlightKeywords(
+            news.AB,
+            news.KW.map((k) => k.value)
+          )}
+        </Paragraph>
+
+        {/* ключевые слова */}
+
+        <div>
+          {news.KW.length !== 0 &&
+            news.KW.map((kw) => {
+              return (
+                <Tag
+                  style={{
+                    padding: "4px 15px",
+                    marginRight: "10px",
+                    borderRadius: "20px",
+                    backgroundColor: "transparent",
+                    fontSize: "14px",
+                  }}
+                >
+                  {kw.value} {kw.count}
+                </Tag>
+              );
+            })}
+        </div>
+
+        <Space style={{ marginTop: "30px" }}>
+          <Typography.Link
+            href={news.URL}
+            style={{
+              color: "0c5ccc",
+              padding: "8px 8px",
+
+              borderRadius: "10px",
+              backgroundColor: "#ababab",
+            }}
+          >
+            Original Source
+          </Typography.Link>
+        </Space>
       </Card>
     </div>
   );
