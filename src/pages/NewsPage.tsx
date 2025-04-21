@@ -10,6 +10,7 @@ import {
   Space,
   Image,
   Flex,
+  Select,
 } from "antd";
 import type { CheckboxProps } from "antd";
 import {
@@ -156,7 +157,10 @@ export function NewsPage() {
             </Space>
           </Col>
         </Row>
-        <Typography.Title level={3} style={{ color: "#0c5ccc" }}>
+        <Typography.Title
+          level={3}
+          style={{ color: "#0c5ccc", marginTop: "10px" }}
+        >
           {news.TI}
         </Typography.Title>
         <Space>
@@ -220,6 +224,82 @@ export function NewsPage() {
             Original Source
           </Typography.Link>
         </Space>
+        <Flex
+          style={{ marginTop: "20px" }}
+          align="center"
+          justify="space-between"
+        >
+          <Text>Duplicates: 192</Text>
+          <Select
+            defaultValue="By Relevance"
+            style={{ width: 160 }}
+            popupMatchSelectWidth={false}
+            options={[
+              {
+                value: "By Relevance",
+              },
+              {
+                value: "From min to max",
+              },
+              {
+                value: "From max to min",
+              },
+            ]}
+          />
+        </Flex>
+
+        {/* Список дублирования */}
+        <Card style={{ border: "2px solid #0c5ccc" }}>
+          <Row justify="space-between" align="middle">
+            <Col>
+              <Space size="middle">
+                <Text>
+                  {new Date(news.DP).toLocaleDateString("en-GB", {
+                    day: "2-digit",
+                    month: "short",
+                    year: "numeric",
+                  })}
+                </Text>
+                <Text>
+                  {news.REACH} <Text type="secondary">Reach</Text>{" "}
+                </Text>
+              </Space>
+            </Col>
+
+            <Col>
+              <Space size="middle">
+                <Button icon={<InfoOutlined />}></Button>
+                <Checkbox onChange={onChange}></Checkbox>
+              </Space>
+            </Col>
+          </Row>
+          <Typography.Title
+            level={3}
+            style={{ color: "#0c5ccc", marginTop: "10px" }}
+          >
+            {news.TI}
+          </Typography.Title>
+          <Space>
+            <Space style={{ marginRight: "10px" }}>
+              <GlobalOutlined />
+              <Text>{news.DOM}</Text>
+            </Space>
+            <Space style={{ marginRight: "10px" }}>
+              <Image
+                src={`https://flagsapi.com/${news.CNTR_CODE}/flat/24.png`}
+              />
+              <Text>{news.CNTR}</Text>
+            </Space>
+            <Space style={{ marginRight: "10px" }}>
+              <BookOutlined />
+              <Text>{news.LANG}</Text>
+            </Space>
+            <Space style={{ marginRight: "10px" }}>
+              {news.AU.length !== 0 &&
+                news.AU.map((author) => <Text key={author}>{author}</Text>)}
+            </Space>
+          </Space>
+        </Card>
       </Card>
     </div>
   );
