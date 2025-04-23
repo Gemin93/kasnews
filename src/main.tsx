@@ -7,7 +7,7 @@ const root = document.getElementById("root")!;
 
 ReactDOM.createRoot(root).render(
   <StrictMode>
-    <BrowserRouter>
+    <BrowserRouter basename="/kasnews">
       <App />
     </BrowserRouter>
   </StrictMode>
